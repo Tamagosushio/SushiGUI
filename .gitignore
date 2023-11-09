@@ -1,0 +1,17 @@
+.vs/
+Intermediate/
+SushiGUI.sln
+SushiGUI/stdafx.h
+SushiGUI/stdafx.cpp
+SushiGUI/.editorconfig
+SushiGUI/SushiGUI.vcxproj
+SushiGUI/SushiGUI.vcxproj.filters
+SushiGUI/SushiGUI.vcxproj.user
+SushiGUI/App/AS_DEBUG
+SushiGUI/App/dll
+SushiGUI/App/engine
+SushiGUI/App/example
+SushiGUI/App/icon.ico
+SushiGUI/App/SushiGUI.exe
+SushiGUI/App/SushiGUI(debug).exe
+SushiGUI/App/Resource.rc
