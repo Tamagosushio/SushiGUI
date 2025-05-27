@@ -1,16 +1,22 @@
-﻿# include <Siv3D.hpp> // Siv3D v0.6.12
-# include "SushiGUI.hpp"
+﻿#include <Siv3D.hpp>
+#include "SushiGUI.hpp"
+#include "Pendulum.hpp"
 
 void Main() {
 
-	Font font{ 100 };
+  Scene::SetBackground(Palette::Lightblue);
 
-	while (System::Update()) {
-		Arg::leftCenter_<Vec2> anchor = Vec2{ Scene::Center().x, Scene::Center().y };
-		SushiGUI::button1(font, U"う～んそうだねそういう油の安定系あのαみたいな", anchor, Vec2{ 100, 50 });
-		SushiGUI::button1(font, U"きもちよく～", Arg::topRight(150, 150), Vec2{100, 50});
-		//SushiGUI::button1(U"ｵﾛ", Point{Scene::Center().x, Scene::Center().y}, Size{ 100, 200 });
-	}
-	Circle{ Arg::bottomCenter(100, 100 ), 50};
+  SimplePendulum pendulum1{};
+  SimplePendulum pendulum2{ 0.25_pi, 0.5 };
+  SimplePendulum pendulum3{ 0.75_pi, 2.0, 9.8*2 };
+  SimplePendulum pendulum4{ 0.50_pi, 1.0, 9.8*2 };
 
+
+
+  while (System::Update()) {
+    Circle{ Scene::CenterF() + 100 * pendulum1.update(), 5.0 }.draw(Palette::Red);
+    Circle{ Scene::CenterF() + 100 * pendulum2.update(), 5.0 }.draw(Palette::Green);
+    Circle{ Scene::CenterF() + 100 * pendulum3.update(), 5.0 }.draw(Palette::Blue);
+    Circle{ Scene::CenterF() + 100 * pendulum4.update(), 5.0 }.draw(Palette::Black);
+  }
 }
