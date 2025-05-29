@@ -13,7 +13,7 @@ SimplePendulum::SimplePendulum(
 /// @brief 振り子を更新
 /// @return 振り子のx,y座標
 void SimplePendulum::update(void) {
-  this->theta0_a = -g * Sin(theta0);
+  this->theta0_a = -g * Sin(theta0) / length0;
   this->theta0_v += theta0_a * Scene::DeltaTime();
   this->theta0 += theta0_v * Scene::DeltaTime();
   this->coordinate = Vec2{
