@@ -8,7 +8,6 @@
 MakeGif::MakeGif(const FilePath& path, uint32 fps) : fps(fps) {
   assert(fps <= 30);
   this->refresh_rate = static_cast<uint32>(System::GetCurrentMonitor().refreshRate.value());
-  Console << this->refresh_rate;
   writer = AnimatedGIFWriter{ path, Scene::Size() };
 }
 /// @brief GIFアニメーション作成の起動 
