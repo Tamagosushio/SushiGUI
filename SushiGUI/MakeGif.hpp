@@ -6,6 +6,7 @@ private:
   bool is_started = false;
   uint32 fps = 30;
   uint32 frame_n = 0;
+  uint32 refresh_rate;
   AnimatedGIFWriter writer;
 public:
   // 値初期化
