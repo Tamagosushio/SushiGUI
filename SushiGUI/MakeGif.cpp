@@ -4,9 +4,10 @@
 
 /// @brief パラメータの初期化
 /// @param path GIFを保存するファイルパス
-/// @param fps 30以下かつ、60の約数でなければならない
+/// @param fps 30以下でなければならない
 MakeGif::MakeGif(const FilePath& path, uint32 fps) : fps(fps) {
-  assert(60 % fps == 0);
+  assert(fps <= 30);
+  this->refresh_rate = static_cast<uint32>(System::GetCurrentMonitor().refreshRate.value());
   writer = AnimatedGIFWriter{ path, Scene::Size() };
 }
 /// @brief GIFアニメーション作成の起動 
@@ -17,7 +18,7 @@ void MakeGif::start(void) {
 void MakeGif::capture(void) {
   if (is_started) {
     ScreenCapture::RequestCurrentFrame();
-    ++frame_n %= 60 / static_cast<int32>(fps);
+    ++frame_n %= refresh_rate / fps;
     if (this->frame_n == 0 and ScreenCapture::HasNewFrame()) {
       const Image frame_image = ScreenCapture::GetFrame();
       writer.writeFrame(frame_image, SecondsF(1.0 / this->fps));
