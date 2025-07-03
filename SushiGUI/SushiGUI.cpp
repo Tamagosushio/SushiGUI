@@ -22,9 +22,29 @@ namespace s3d {
     }
 
     bool Button::operator()(const Font& font, const StringView& label, const RectF& rect, bool enabled) const {
-      const RoundRect button_roundrect = rect.rounded(
-        style_.roundrect_rate ? Min(rect.w, rect.h) / *style_.roundrect_rate : 0.0
-      );
+      // ボタンの長方形
+      RectF button_rect = rect;
+      RoundRect button_roundrect;
+      // ボタンの識別子
+      const uint64 id = Hash::FNV1a(rect);
+      // ボタンにアニメーションがあるとき
+      if (style_.float_duration and enabled) {
+        // 状態管理テーブルにidがなければ新しく生成
+        if (not button_states.contains(id)) button_states.emplace(id, ButtonState{*style_.float_duration});
+        ButtonState& state = button_states.at(id);
+        state.float_transition.update(rect.mouseOver() and not rect.leftPressed());
+        const double float_value = state.float_transition.value();
+        const double y_offset = rect.h * button_float_rate * float_value;
+        button_rect = rect.movedBy(0, -y_offset);
+        button_roundrect = button_rect.rounded(
+          style_.roundrect_rate ? Min(button_rect.w, button_rect.h) / *style_.roundrect_rate : 0.0
+        );
+        button_roundrect.drawShadow(Vec2{ 0, y_offset }, float_value * button_shadow_spread);
+      } else {
+        button_roundrect = button_rect.rounded(
+          style_.roundrect_rate ? Min(button_rect.w, button_rect.h) / *style_.roundrect_rate : 0.0
+        );
+      }
       const ScopedColorMul2D color_mul{ enabled ? ColorF{ 1.0 } : ColorF{ 0.5 } };
       if (enabled) {
         if (style_.color_press and button_roundrect.leftPressed()) {
@@ -38,9 +58,9 @@ namespace s3d {
         button_roundrect.draw(style_.color_release);
       }
       if (style_.color_frame and style_.frame_thickness_rate) {
-        button_roundrect.drawFrame(Min(rect.w, rect.h) / *style_.frame_thickness_rate, *style_.color_frame);
+        button_roundrect.drawFrame(Min(button_rect.w, button_rect.h) / *style_.frame_thickness_rate, *style_.color_frame);
       }
-      draw_button_label(label, rect, font, style_.color_label);
+      draw_button_label(label, button_rect, font, style_.color_label);
       return (enabled and is_click_button(button_roundrect));
     }
 

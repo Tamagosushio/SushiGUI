@@ -26,6 +26,10 @@ void Main() {
     if (SushiGUI::Button4(font_button, U"button4", Arg::topRight(Scene::CenterF().withY(230)), Size{ 150, 50 })) {
       Print << U"button4";
     }
+    if (SushiGUI::Button5(font_button, U"button5", Arg::topRight(Scene::CenterF().withY(290)), Size{ 150, 50 })) {
+      Print << U"button5";
+    }
+    
 
 
     if (SimpleGUI::Button(U"start!", Vec2{ 0.0, 0.0 })) {

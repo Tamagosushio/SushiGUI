@@ -7,10 +7,20 @@ namespace s3d {
     using position_type = Vec2;
     using size_type = Vec2;
 
-    constexpr double rect_stretch_rate = 20;
+    constexpr double rect_stretch_rate = 20.0;
+    constexpr double button_float_rate = 0.05;
+    constexpr double button_shadow_spread = 20.0;
 
     void draw_button_label(const StringView& label, const RectF& rectf, const Font& font, const Color& color);
     bool is_click_button(const RoundRect& roundrect);
+
+    struct ButtonState {
+      Transition float_transition;
+      ButtonState(const Duration& float_transition)
+        : float_transition{ float_transition } {}
+    };
+    // 状態を保持する静的ハッシュテーブル
+    static HashTable<uint64, ButtonState> button_states;
 
     struct ButtonStyle {
       Color color_release; // ボタンの背景色
@@ -20,6 +30,7 @@ namespace s3d {
       Optional<Color> color_frame = unspecified; // ボタンフレームの色
       Optional<double> frame_thickness_rate = unspecified; // ボタンフレームの太さ
       Optional<double> roundrect_rate = unspecified; // 角丸の大きさ比率
+      Optional<Duration> float_duration = unspecified; // 浮かびきる時間
     };
 
     inline constexpr ButtonStyle button1_style{
@@ -53,6 +64,15 @@ namespace s3d {
       .roundrect_rate = 5.0,
     };
 
+    inline constexpr ButtonStyle button5_style{
+      .color_release = Color{ U"#FA6400" },
+      .color_mouseover = Color{ U"#FB8332" },
+      .color_press = Color{ U"#C85000" },
+      .color_label = Color{ U"#FFFFFF" },
+      .roundrect_rate = 10.0,
+      .float_duration = 0.25s,
+    };
+
 
 
     class Button {
@@ -75,6 +95,7 @@ namespace s3d {
     inline constexpr Button Button2{ button2_style };
     inline constexpr Button Button3{ button3_style };
     inline constexpr Button Button4{ button4_style };
+    inline constexpr Button Button5{ button5_style };
 
     // カスタムスタイル用のファクトリ関数
     inline Button button(const ButtonStyle& style) {
