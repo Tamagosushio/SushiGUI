@@ -28,13 +28,13 @@ namespace s3d {
       // ボタンの識別子
       const uint64 id = Hash::FNV1a(rect);
       // ボタンにアニメーションがあるとき
-      if (style_.float_duration and enabled) {
+      if (style_.float_duration and style_.float_rate and enabled) {
         // 状態管理テーブルにidがなければ新しく生成
         if (not button_states.contains(id)) button_states.emplace(id, ButtonState{*style_.float_duration});
         ButtonState& state = button_states.at(id);
         state.float_transition.update(rect.mouseOver() and not rect.leftPressed());
         const double float_value = state.float_transition.value();
-        const double y_offset = rect.h * button_float_rate * float_value;
+        const double y_offset = rect.h * *style_.float_rate * float_value;
         button_rect = rect.movedBy(0, -y_offset);
         button_roundrect = button_rect.rounded(
           style_.roundrect_rate ? Min(button_rect.w, button_rect.h) / *style_.roundrect_rate : 0.0

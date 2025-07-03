@@ -8,7 +8,6 @@ namespace s3d {
     using size_type = Vec2;
 
     constexpr double rect_stretch_rate = 20.0;
-    constexpr double button_float_rate = 0.05;
     constexpr double button_shadow_spread = 20.0;
 
     void draw_button_label(const StringView& label, const RectF& rectf, const Font& font, const Color& color);
@@ -31,6 +30,7 @@ namespace s3d {
       Optional<double> frame_thickness_rate = unspecified; // ボタンフレームの太さ
       Optional<double> roundrect_rate = unspecified; // 角丸の大きさ比率
       Optional<Duration> float_duration = unspecified; // 浮かびきる時間
+      Optional<double> float_rate = unspecified; // 浮かぶ高さ比
     };
 
     inline constexpr ButtonStyle button1_style{
@@ -71,6 +71,7 @@ namespace s3d {
       .color_label = Color{ U"#FFFFFF" },
       .roundrect_rate = 10.0,
       .float_duration = 0.25s,
+      .float_rate = 0.05,
     };
 
 
