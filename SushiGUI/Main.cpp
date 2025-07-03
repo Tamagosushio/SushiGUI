@@ -6,45 +6,25 @@
 
 void Main() {
 
-  Scene::SetBackground(Palette::Lightblue);
-
-  DoublePendulum d_pendulum1{
-    0.500000_pi, 1.5, 2.0,
-    0.00_pi, 0.5, 0.5,
-    9.8, 100.0, Scene::CenterF()
-  };
-  DoublePendulum d_pendulum2{
-    0.499999_pi, 1.5, 2.0,
-    0.00_pi, 0.5, 0.5,
-    9.8, 100.0, Scene::CenterF()
-  };
+  Scene::SetBackground(Palette::White);
+  Window::Resize(1280, 720);
+  Font font_button(48, Typeface::Bold);
 
   MakeGif makegif{ U"./output.gif" };
 
-  Array<Vec2> points1;
-  Array<Vec2> points2;
-
   while (System::Update()) {
 
-    d_pendulum1.update();
-    d_pendulum2.update();
-
-    Circle{ d_pendulum1.get_coordinate0(), 5.0}.draw(Palette::Black);
-    Circle{ d_pendulum1.get_coordinate1(), 5.0 }.draw(Palette::Black);
-    Line{ d_pendulum1.get_offset() , d_pendulum1.get_coordinate0()}.draw(Palette::Black);
-    Line{ d_pendulum1.get_coordinate0(), d_pendulum1.get_coordinate1() }.draw(Palette::Black);
-    points1 << d_pendulum1.get_coordinate1();
-    for (const Vec2& point : points1) {
-      Circle{ point, 1.0 }.draw(Palette::Red);
+    if (SushiGUI::Button1(font_button, U"button1", Arg::topRight(Scene::CenterF().withY(50)), Size{ 150, 50 })) {
+      Print << U"button1";
     }
-
-    Circle{ d_pendulum2.get_coordinate0(), 5.0 }.draw(Palette::Black);
-    Circle{ d_pendulum2.get_coordinate1(), 5.0 }.draw(Palette::Black);
-    Line{ d_pendulum2.get_offset(), d_pendulum2.get_coordinate0()}.draw(Palette::Black);
-    Line{ d_pendulum2.get_coordinate0(), d_pendulum2.get_coordinate1() }.draw(Palette::Black);
-    points2 << d_pendulum2.get_coordinate1();
-    for (const Vec2& point : points2) {
-      Circle{ point, 1.0 }.draw(Palette::Blue);
+    if (SushiGUI::Button2(font_button, U"button2", Arg::topRight(Scene::CenterF().withY(110)), Size{ 150, 50 })) {
+      Print << U"button2";
+    }
+    if (SushiGUI::Button3(font_button, U"button3", Arg::topRight(Scene::CenterF().withY(170)), Size{ 150, 50 })) {
+      Print << U"button3";
+    }
+    if (SushiGUI::Button4(font_button, U"button4", Arg::topRight(Scene::CenterF().withY(230)), Size{ 150, 50 })) {
+      Print << U"button4";
     }
 
 
