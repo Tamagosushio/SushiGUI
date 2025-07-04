@@ -39,7 +39,7 @@ namespace s3d {
         button_roundrect = button_rect.rounded(
           style_.roundrect_rate ? Min(button_rect.w, button_rect.h) / *style_.roundrect_rate : 0.0
         );
-        button_roundrect.drawShadow(Vec2{ 0, y_offset }, float_value * button_shadow_spread);
+        button_roundrect.drawShadow(Vec2{ 0, y_offset }, float_value * button_shadow_spread, 0.0, style_.float_shadow_color);
       } else {
         button_roundrect = button_rect.rounded(
           style_.roundrect_rate ? Min(button_rect.w, button_rect.h) / *style_.roundrect_rate : 0.0

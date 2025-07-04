@@ -31,6 +31,7 @@ namespace s3d {
       Optional<double> roundrect_rate = unspecified; // 角丸の大きさ比率
       Optional<Duration> float_duration = unspecified; // 浮かびきる時間
       Optional<double> float_rate = unspecified; // 浮かぶ高さ比
+      Color float_shadow_color{ U"#000000" }; // 浮かんでいるときの影の色
     };
 
     inline constexpr ButtonStyle button1_style{
@@ -93,6 +94,26 @@ namespace s3d {
       .roundrect_rate = 10.0,
     };
 
+    inline constexpr ButtonStyle button8_style{
+      .color_release = Color{ U"#E1ECF4" },
+      .color_mouseover = Color{ U"#B3D3EA"},
+      .color_press = Color{ U"#A0C7E4" },
+      .color_label = Color{ U"#39739D" },
+      .color_frame = Color{ U"#7AA7C7" },
+      .frame_thickness_rate = 25.0,
+      .roundrect_rate = 10.0,
+    };
+
+    inline constexpr ButtonStyle button9_style{
+      .color_release = Color{ U"#405CF5" },
+      .color_label = Color{ U"#FFFFFF" },
+      .frame_thickness_rate = 25.0,
+      .roundrect_rate = 5.0,
+      .float_duration = 0.00s,
+      .float_rate = 0.00,
+      .float_shadow_color = Color{ 50, 50, 93 },
+    };
+
     class Button {
     private:
       const ButtonStyle style_;
@@ -116,6 +137,8 @@ namespace s3d {
     inline constexpr Button Button5{ button5_style };
     inline constexpr Button Button6{ button6_style };
     inline constexpr Button Button7{ button7_style };
+    inline constexpr Button Button8{ button8_style };
+    inline constexpr Button Button9{ button9_style };
 
     // カスタムスタイル用のファクトリ関数
     inline Button button(const ButtonStyle& style) {
