@@ -74,7 +74,16 @@ namespace s3d {
       .float_rate = 0.05,
     };
 
-
+    inline constexpr ButtonStyle button6_style{
+      .color_release = Color{ U"#FFFFFF" },
+      .color_press = Color{ U"#F0F0F1" },
+      .color_label = ColorF{ 0, 0.85 },
+      .color_frame = ColorF{ 0, 0.10 },
+      .frame_thickness_rate = 50.0,
+      .roundrect_rate = 10.0,
+      .float_duration = 0.25s,
+      .float_rate = 0.00,
+    };
 
     class Button {
     private:
@@ -97,6 +106,7 @@ namespace s3d {
     inline constexpr Button Button3{ button3_style };
     inline constexpr Button Button4{ button4_style };
     inline constexpr Button Button5{ button5_style };
+    inline constexpr Button Button6{ button6_style };
 
     // カスタムスタイル用のファクトリ関数
     inline Button button(const ButtonStyle& style) {
