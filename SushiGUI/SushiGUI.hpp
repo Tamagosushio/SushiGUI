@@ -23,35 +23,47 @@ namespace s3d {
 
     struct ButtonStyle;
 
-    // ストラテジーパターン
+    /// @brief ボタンの振る舞いのインターフェース
     class IButtonBehavior {
     public:
       virtual ~IButtonBehavior() = default;
       virtual void update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const = 0;
       virtual void draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const = 0;
     };
-    /// @brief ホバーとプレスで色が変わるだけ
+    /// @brief 基本的な描画を行うボタンの振る舞い
     class DefaultBehavior : public IButtonBehavior {
     public:
       void update([[maybe_unused]] const uint64 id, [[maybe_unused]] const RectF& rectf, [[maybe_unused]] const ButtonStyle& style, [[maybe_unused]] bool enabled) const override {};
       void draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const override;
     };
-    // 浮かび上がる
-    class FloatingBehavior : public IButtonBehavior {
+
+    /// @brief 振る舞いを修飾するクラスの基底クラス
+    class ButtonBehaviorDecorator : public IButtonBehavior {
+    protected:
+      const IButtonBehavior& behaivor_;
     public:
+      explicit constexpr ButtonBehaviorDecorator(const IButtonBehavior& behavior) : behaivor_{ behavior } {}
+      void update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const override {
+        behaivor_.update(id, rectf, style, enabled);
+      }
+    };
+    /// @brief 浮かび上がる効果を追加
+    class FloatingDecorator : public ButtonBehaviorDecorator {
+    public:
+      using ButtonBehaviorDecorator::ButtonBehaviorDecorator;
       void update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const override;
       void draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const override;
     };
-
+    
 
     // Behaviorのインスタンスを生成 (ButtonStyle定義の前に置く)
-    inline constexpr DefaultBehavior defaultBehavior;
-    inline constexpr FloatingBehavior floatingBehavior;
+    inline constexpr DefaultBehavior default_behavior;
+    inline constexpr FloatingDecorator floating_behavior{ default_behavior };
 
 
     /// @brief ボタンのスタイルを定義する構造体
     struct ButtonStyle {
-      const IButtonBehavior* behavior = &defaultBehavior; // 振る舞いの指定
+      const IButtonBehavior* behavior = &default_behavior; // 振る舞いの指定
       Color color_release; // ボタンの背景色
       Optional<Color> color_mouseover = unspecified; // マウスホバー時のボタン背景色
       Optional<Color> color_press = unspecified; // プレス時のボタン背景色
@@ -65,7 +77,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button1_style{
-      .behavior = &defaultBehavior,
+      .behavior = &default_behavior,
       .color_release = Color{ U"#EA4C89" },
       .color_mouseover = Color{ U"#F082AC" },
       .color_label = Color{ U"#FFFFFF" },
@@ -73,14 +85,14 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button2_style{
-      .behavior = &defaultBehavior,
+      .behavior = &default_behavior,
       .color_release = Color{ U"#F5F5F5" },
       .color_label = Color{ U"#333333" },
       .roundrect_rate = 5.0,
     };
 
     inline constexpr ButtonStyle button3_style{
-      .behavior = &defaultBehavior,
+      .behavior = &default_behavior,
       .color_release = Color{ U"#2EA44F" },
       .color_mouseover = Color{ U"#2C974B" },
       .color_press = Color{ U"#298E46" },
@@ -89,7 +101,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button4_style{
-      .behavior = &defaultBehavior,
+      .behavior = &default_behavior,
       .color_release = Color{ U"#FAFBFC" },
       .color_mouseover = Color{ U"#F3F4F6" },
       .color_press = Color{ U"#EAECF0" },
@@ -100,7 +112,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button5_style{
-      .behavior = &floatingBehavior,
+      .behavior = &floating_behavior,
       .color_release = Color{ U"#FA6400" },
       .color_mouseover = Color{ U"#FB8332" },
       .color_press = Color{ U"#C85000" },
@@ -111,7 +123,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button6_style{
-      .behavior = &floatingBehavior,
+      .behavior = &floating_behavior,
       .color_release = Color{ U"#FFFFFF" },
       .color_press = Color{ U"#F0F0F1" },
       .color_label = ColorF{ 0, 0.85 },
@@ -123,7 +135,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button7_style{
-      .behavior = &defaultBehavior,
+      .behavior = &default_behavior,
       .color_release = Color{ U"#0095FF" },
       .color_mouseover = Color{ U"#07c"},
       .color_press = Color{ U"#0064BD" },
@@ -132,7 +144,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button8_style{
-      .behavior = &defaultBehavior,
+      .behavior = &default_behavior,
       .color_release = Color{ U"#E1ECF4" },
       .color_mouseover = Color{ U"#B3D3EA"},
       .color_press = Color{ U"#A0C7E4" },
@@ -143,7 +155,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button9_style{
-      .behavior = &floatingBehavior,
+      .behavior = &floating_behavior,
       .color_release = Color{ U"#405CF5" },
       .color_label = Color{ U"#FFFFFF" },
       .frame_thickness_rate = 25.0,

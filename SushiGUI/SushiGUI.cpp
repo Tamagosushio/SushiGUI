@@ -22,7 +22,8 @@ namespace s3d {
     }
 
     void DefaultBehavior::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
-      const RoundRect roundrect{ rectf, Min(rectf.w, rectf.h) / *style.roundrect_rate };
+      const double r = style.roundrect_rate.value_or(0.0);
+      const RoundRect roundrect{ rectf, Min(rectf.w, rectf.h) / r };
       Color color = style.color_release;
       if (enabled) {
         if (style.color_press and roundrect.leftPressed()) {
@@ -38,15 +39,15 @@ namespace s3d {
       draw_button_label(label, rectf, font, style.color_label);
     }
 
-    void FloatingBehavior::update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const {
-      if (!style.float_duration) return;
-      if (not button_states.contains(id)) {
-        button_states.emplace(id, ButtonState{ *style.float_duration });
+    void FloatingDecorator::update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const {
+      if (style.float_duration) {
+        if (not button_states.contains(id)) button_states.emplace(id, ButtonState{ *style.float_duration });
+        auto& state = button_states.at(id);
+        state.float_transition.update(enabled and rectf.mouseOver() and !rectf.leftPressed());
       }
-      auto& state = button_states.at(id);
-      state.float_transition.update(enabled and rectf.mouseOver() and !rectf.leftPressed());
+      ButtonBehaviorDecorator::update(id, rectf, style, enabled);
     }
-    void FloatingBehavior::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
+    void FloatingDecorator::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
       RectF button_rect = rectf;
       double y_offset = 0.0;
       double float_value = 0.0;
@@ -55,32 +56,18 @@ namespace s3d {
         float_value = state.float_transition.value();
         y_offset = rectf.h * *style.float_rate * float_value;
         button_rect.y -= y_offset;
+        const double r = style.roundrect_rate.value_or(0.0);
+        const RoundRect shardow_rect{ button_rect, (r > 0) ? (Min(rectf.w, rectf.h) / r) : 0.0 };
+        shardow_rect.drawShadow(Vec2{ 0, y_offset }, float_value * button_shadow_spread, 0.0, style.float_shadow_color);
       }
-      const RoundRect button_roundrect{ button_rect, Min(rectf.w, rectf.h) / *style.roundrect_rate };
-      // 影の描画
-      button_roundrect.drawShadow(Vec2{ 0, y_offset }, float_value * button_shadow_spread, 0.0, style.float_shadow_color);
-      // 色の決定と本体の描画 (DefaultBehaviorとほぼ同じ)
-      Color color = style.color_release;
-      if (enabled) {
-        if (style.color_press and button_roundrect.leftPressed()) {
-          color = *style.color_press;
-        }
-        else if (style.color_mouseover and button_roundrect.mouseOver()) {
-          color = *style.color_mouseover;
-        }
-      }
-      button_roundrect.draw(color);
-      // フレームとラベルの描画
-      if (style.color_frame and style.frame_thickness_rate) {
-        button_roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.color_frame);
-      }
-      draw_button_label(label, button_rect, font, style.color_label);
+      behaivor_.draw(id, button_rect, font, label, style, enabled);
     }
 
 
     bool Button::operator()(const Font& font, const StringView& label, const RectF& rectf, bool enabled) const {
       const uint64 id = Hash::FNV1a(rectf);
-      const RoundRect interact_rect{ rectf, Min(rectf.w, rectf.h) / *style_.roundrect_rate };
+      const double r = style_.roundrect_rate.value_or(0.0);
+      const RoundRect interact_rect{ rectf, (r>0) ? Min(rectf.w, rectf.h) / *style_.roundrect_rate : 0.0 };
       if (style_.behavior) {
         style_.behavior->update(id, rectf, style_, enabled);
         const ScopedColorMul2D color_mul{ enabled ? ColorF{1.0} : ColorF{0.5} };
