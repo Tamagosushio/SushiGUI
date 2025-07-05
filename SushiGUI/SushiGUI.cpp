@@ -63,6 +63,20 @@ namespace s3d {
       behaivor_.draw(id, button_rect, font, label, style, enabled);
     }
 
+    void GradientDecorator::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
+      if (not (style.gradient_color_start and style.gradient_color_end)) {
+        behaivor_.draw(id, rectf, font, label, style, enabled);
+        return;
+      }
+      const double r = style.roundrect_rate.value_or(0.0);
+      const RoundRect roundrect{ rectf, (r > 0) ? Min(rectf.w, rectf.h) / r : 0.0 };
+      roundrect.draw(Arg::top(*style.gradient_color_start), Arg::bottom(*style.gradient_color_end));
+      if (style.color_frame and style.frame_thickness_rate) {
+        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.color_frame);
+      }
+      draw_button_label(label, rectf, font, style.color_label);
+    }
+
 
     bool Button::operator()(const Font& font, const StringView& label, const RectF& rectf, bool enabled) const {
       const uint64 id = Hash::FNV1a(rectf);

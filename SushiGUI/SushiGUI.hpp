@@ -21,6 +21,7 @@ namespace s3d {
     // 状態を保持する静的ハッシュテーブル
     static HashTable<uint64, ButtonState> button_states;
 
+
     struct ButtonStyle;
 
     /// @brief ボタンの振る舞いのインターフェース
@@ -54,12 +55,19 @@ namespace s3d {
       void update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const override;
       void draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const override;
     };
+    /// @brief グラデーション効果を追加
+    class GradientDecorator : public ButtonBehaviorDecorator {
+    public:
+      using ButtonBehaviorDecorator::ButtonBehaviorDecorator;
+      void draw(const uint64 it, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const override;
+    };
     
 
     // Behaviorのインスタンスを生成 (ButtonStyle定義の前に置く)
     inline constexpr DefaultBehavior default_behavior;
     inline constexpr FloatingDecorator floating_behavior{ default_behavior };
-
+    inline constexpr GradientDecorator gradient_behavior{ default_behavior };
+    inline constexpr FloatingDecorator floating_gradient_behavior{ gradient_behavior };
 
     /// @brief ボタンのスタイルを定義する構造体
     struct ButtonStyle {
@@ -74,6 +82,8 @@ namespace s3d {
       Optional<Duration> float_duration = unspecified; // 浮かびきる時間
       Optional<double> float_rate = unspecified; // 浮かぶ高さ比
       Color float_shadow_color{ U"#000000" }; // 浮かんでいるときの影の色
+      Optional<Color> gradient_color_start = unspecified; // グラデーションの上部の色
+      Optional<Color> gradient_color_end = unspecified; // グラデーションの下部の色
     };
 
     inline constexpr ButtonStyle button1_style{
@@ -165,6 +175,17 @@ namespace s3d {
       .float_shadow_color = Color{ 50, 50, 93 },
     };
 
+    inline constexpr ButtonStyle button10_style{
+      .behavior = &floating_gradient_behavior,
+      .color_label = Color{ U"#FFFFFF" },
+      .roundrect_rate = 5.0,
+      .float_duration = 0.00s,
+      .float_rate = 0.00,
+      .float_shadow_color = Color{ 54, 122, 246 },
+      .gradient_color_start = Color{ U"#4B91F7" },
+      .gradient_color_end = Color{ U"#367AF6" },
+    };
+
     class Button {
     private:
       const ButtonStyle style_;
@@ -190,6 +211,7 @@ namespace s3d {
     inline constexpr Button Button7{ button7_style };
     inline constexpr Button Button8{ button8_style };
     inline constexpr Button Button9{ button9_style };
+    inline constexpr Button Button10{ button10_style };
 
     // カスタムスタイル用のファクトリ関数
     inline Button button(const ButtonStyle& style) {
