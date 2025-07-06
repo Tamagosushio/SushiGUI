@@ -216,6 +216,17 @@ namespace s3d {
       .roundrect_rate = 5.0,
     };
 
+    inline constexpr ButtonStyle button13_style{
+      .behavior = &frame_behaivor,
+      .color_release = Color{ U"#FFFFFF" },
+      .color_label = Color{ U"#0F1111" },
+      .frame_color = Color{ U"#D5D9D9" },
+      .frame_color_press = Color{ U"#008296" },
+      .frame_thickness_rate = 25.0,
+      .frame_thickness_rate_press = 25.0,
+      .roundrect_rate = 5.0,
+    };
+
     class Button {
     private:
       const ButtonStyle style_;
@@ -244,6 +255,7 @@ namespace s3d {
     inline constexpr Button Button10{ button10_style };
     inline constexpr Button Button11{ button11_style };
     inline constexpr Button Button12{ button12_style };
+    inline constexpr Button Button13{ button13_style };
 
     // カスタムスタイル用のファクトリ関数
     inline Button button(const ButtonStyle& style) {
