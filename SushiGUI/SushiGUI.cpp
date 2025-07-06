@@ -41,12 +41,10 @@ namespace s3d {
       if (not style.frame_thickness_rate) return;
       const double r = style.roundrect_rate.value_or(0.0);
       const RoundRect roundrect{ rectf, (r > 0) ? Min(rectf.w, rectf.h) / r : 0.0 };
-      Optional<Color> frame_color = style.frame_color;
-      if (enabled and roundrect.leftPressed() and style.frame_color_press) {
-        frame_color = style.frame_color_press;
-      }
-      if (frame_color) {
-        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *frame_color);
+      if (style.frame_color) {
+        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.frame_color);
+      }else if (enabled and roundrect.leftPressed() and style.frame_color_press) {
+        roundrect.drawFrame(Min(rectf.w, rectf.h) / style.frame_thickness_rate_press, *style.frame_color_press);
       }
     }
 

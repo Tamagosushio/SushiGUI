@@ -74,7 +74,7 @@ namespace s3d {
     inline constexpr FrameDecorator frame_behaivor{ default_behavior };
     inline constexpr FloatingDecorator floating_frame_behavior{ frame_behaivor };
     inline constexpr GradientDecorator gradient_behavior{ default_behavior };
-    inline constexpr FloatingDecorator floating_gradient_behavior{ gradient_behavior };
+    inline constexpr FrameDecorator frame_gradient_behavior{ gradient_behavior };
 
     /// @brief ボタンのスタイルを定義する構造体
     struct ButtonStyle {
@@ -86,6 +86,7 @@ namespace s3d {
       Optional<Color> frame_color = unspecified; // ボタンフレームの色
       Optional<Color> frame_color_press = unspecified; // ボタンフレームの色
       Optional<double> frame_thickness_rate = unspecified; // ボタンフレームの太さ
+      double frame_thickness_rate_press = 1.0; // プレス時のボタンフレームの太さ
       Optional<double> roundrect_rate = unspecified; // 角丸の大きさ比率
       Optional<Duration> float_duration = unspecified; // 浮かびきる時間
       Optional<double> float_rate = unspecified; // 浮かぶ高さ比
@@ -175,45 +176,44 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button9_style{
-      .behavior = &floating_frame_behavior,
+      .behavior = &frame_behaivor,
       .color_release = Color{ U"#405CF5" },
       .color_label = Color{ U"#FFFFFF" },
+      .frame_color_press = Color{ U"#B1CBE0" },
       .frame_thickness_rate = 25.0,
+      .frame_thickness_rate_press = 10.0,
       .roundrect_rate = 5.0,
-      .float_duration = 0.00s,
-      .float_rate = 0.00,
-      .float_shadow_color = Color{ 50, 50, 93 },
     };
 
     inline constexpr ButtonStyle button10_style{
-      .behavior = &floating_gradient_behavior,
+      .behavior = &frame_gradient_behavior,
       .color_label = Color{ U"#FFFFFF" },
+      .frame_color_press = Color{ U"#9CB5EC" },
+      .frame_thickness_rate = 25.0,
+      .frame_thickness_rate_press = 10.0,
       .roundrect_rate = 5.0,
-      .float_duration = 0.00s,
-      .float_rate = 0.00,
-      .float_shadow_color = Color{ 54, 122, 246 },
       .gradient_color_start = Color{ U"#4B91F7" },
       .gradient_color_end = Color{ U"#367AF6" },
     };
 
     inline constexpr ButtonStyle button11_style{
-      .behavior = &floating_frame_behavior,
+      .behavior = &frame_behaivor,
       .color_release = Color{ U"#FFFFFF" },
       .color_label = Color{ U"#3D3D3D" },
+      .frame_color_press = Color{ U"#9CB5EC" },
+      .frame_thickness_rate = 25.0,
+      .frame_thickness_rate_press = 10.0,
       .roundrect_rate = 5.0,
-      .float_duration = 0.00s,
-      .float_rate = 0.00,
-      .float_shadow_color = Color{ 54, 122, 246 },
     };
 
     inline constexpr ButtonStyle button12_style{
-      .behavior = &floating_frame_behavior,
+      .behavior = &frame_behaivor,
       .color_release = Color{ U"#6E6D70" },
       .color_label = Color{ U"#DFDEDF" },
+      .frame_color_press = Color{ U"#9CB5EC" },
+      .frame_thickness_rate = 25.0,
+      .frame_thickness_rate_press = 10.0,
       .roundrect_rate = 5.0,
-      .float_duration = 0.00s,
-      .float_rate = 0.00,
-      .float_shadow_color = Color{ 58, 108, 217 },
     };
 
     class Button {
