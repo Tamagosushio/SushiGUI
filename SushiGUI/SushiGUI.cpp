@@ -23,7 +23,7 @@ namespace s3d {
 
     void DefaultBehavior::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
       const double r = style.roundrect_rate.value_or(0.0);
-      const RoundRect roundrect{ rectf, Min(rectf.w, rectf.h) / r };
+      const RoundRect roundrect{ rectf, (r>0) ? Min(rectf.w, rectf.h) / r : 0.0 };
       Color color = style.color_release;
       if (enabled) {
         if (style.color_press and roundrect.leftPressed()) {
@@ -33,10 +33,21 @@ namespace s3d {
         }
       }
       roundrect.draw(color);
-      if (style.color_frame and style.frame_thickness_rate) {
-        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.color_frame);
-      }
       draw_button_label(label, rectf, font, style.color_label);
+    }
+
+    void FrameDecorator::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
+      behaivor_.draw(id, rectf, font, label, style, enabled);
+      if (not style.frame_thickness_rate) return;
+      const double r = style.roundrect_rate.value_or(0.0);
+      const RoundRect roundrect{ rectf, (r > 0) ? Min(rectf.w, rectf.h) / r : 0.0 };
+      Optional<Color> frame_color = style.frame_color;
+      if (enabled and roundrect.leftPressed() and style.frame_color_press) {
+        frame_color = style.frame_color_press;
+      }
+      if (frame_color) {
+        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *frame_color);
+      }
     }
 
     void FloatingDecorator::update(const uint64 id, const RectF& rectf, const ButtonStyle& style, bool enabled) const {
@@ -71,8 +82,8 @@ namespace s3d {
       const double r = style.roundrect_rate.value_or(0.0);
       const RoundRect roundrect{ rectf, (r > 0) ? Min(rectf.w, rectf.h) / r : 0.0 };
       roundrect.draw(Arg::top(*style.gradient_color_start), Arg::bottom(*style.gradient_color_end));
-      if (style.color_frame and style.frame_thickness_rate) {
-        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.color_frame);
+      if (style.frame_color and style.frame_thickness_rate) {
+        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.frame_color);
       }
       draw_button_label(label, rectf, font, style.color_label);
     }

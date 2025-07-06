@@ -48,6 +48,12 @@ namespace s3d {
         behaivor_.update(id, rectf, style, enabled);
       }
     };
+    /// @brief 枠線表示を追加
+    class FrameDecorator : public ButtonBehaviorDecorator {
+    public:
+      using ButtonBehaviorDecorator::ButtonBehaviorDecorator;
+      void draw(const uint64 it, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const override;
+    };
     /// @brief 浮かび上がる効果を追加
     class FloatingDecorator : public ButtonBehaviorDecorator {
     public:
@@ -65,7 +71,8 @@ namespace s3d {
 
     // Behaviorのインスタンスを生成 (ButtonStyle定義の前に置く)
     inline constexpr DefaultBehavior default_behavior;
-    inline constexpr FloatingDecorator floating_behavior{ default_behavior };
+    inline constexpr FrameDecorator frame_behaivor{ default_behavior };
+    inline constexpr FloatingDecorator floating_frame_behavior{ frame_behaivor };
     inline constexpr GradientDecorator gradient_behavior{ default_behavior };
     inline constexpr FloatingDecorator floating_gradient_behavior{ gradient_behavior };
 
@@ -76,7 +83,8 @@ namespace s3d {
       Optional<Color> color_mouseover = unspecified; // マウスホバー時のボタン背景色
       Optional<Color> color_press = unspecified; // プレス時のボタン背景色
       Color color_label; // ラベルの色
-      Optional<Color> color_frame = unspecified; // ボタンフレームの色
+      Optional<Color> frame_color = unspecified; // ボタンフレームの色
+      Optional<Color> frame_color_press = unspecified; // ボタンフレームの色
       Optional<double> frame_thickness_rate = unspecified; // ボタンフレームの太さ
       Optional<double> roundrect_rate = unspecified; // 角丸の大きさ比率
       Optional<Duration> float_duration = unspecified; // 浮かびきる時間
@@ -102,27 +110,29 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button3_style{
-      .behavior = &default_behavior,
+      .behavior = &frame_behaivor,
       .color_release = Color{ U"#2EA44F" },
       .color_mouseover = Color{ U"#2C974B" },
       .color_press = Color{ U"#298E46" },
       .color_label = Color{ U"#FFFFFF" },
+      .frame_color = Color{ U"#2B9148"},
+      .frame_thickness_rate = 25.0,
       .roundrect_rate = 5.0,
     };
 
     inline constexpr ButtonStyle button4_style{
-      .behavior = &default_behavior,
+      .behavior = &frame_behaivor,
       .color_release = Color{ U"#FAFBFC" },
       .color_mouseover = Color{ U"#F3F4F6" },
       .color_press = Color{ U"#EAECF0" },
       .color_label = Color{ U"#24292E" },
-      .color_frame = Color{ U"#1b1f23" },
+      .frame_color = Color{ U"#D9DBDB" },
       .frame_thickness_rate = 50.0,
       .roundrect_rate = 5.0,
     };
 
     inline constexpr ButtonStyle button5_style{
-      .behavior = &floating_behavior,
+      .behavior = &floating_frame_behavior,
       .color_release = Color{ U"#FA6400" },
       .color_mouseover = Color{ U"#FB8332" },
       .color_press = Color{ U"#C85000" },
@@ -133,11 +143,11 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button6_style{
-      .behavior = &floating_behavior,
+      .behavior = &floating_frame_behavior,
       .color_release = Color{ U"#FFFFFF" },
       .color_press = Color{ U"#F0F0F1" },
       .color_label = ColorF{ 0, 0.85 },
-      .color_frame = ColorF{ 0, 0.10 },
+      .frame_color = ColorF{ 0, 0.10 },
       .frame_thickness_rate = 50.0,
       .roundrect_rate = 10.0,
       .float_duration = 0.25s,
@@ -154,18 +164,18 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button8_style{
-      .behavior = &default_behavior,
+      .behavior = &frame_behaivor,
       .color_release = Color{ U"#E1ECF4" },
       .color_mouseover = Color{ U"#B3D3EA"},
       .color_press = Color{ U"#A0C7E4" },
       .color_label = Color{ U"#39739D" },
-      .color_frame = Color{ U"#7AA7C7" },
+      .frame_color = Color{ U"#7AA7C7" },
       .frame_thickness_rate = 25.0,
       .roundrect_rate = 10.0,
     };
 
     inline constexpr ButtonStyle button9_style{
-      .behavior = &floating_behavior,
+      .behavior = &floating_frame_behavior,
       .color_release = Color{ U"#405CF5" },
       .color_label = Color{ U"#FFFFFF" },
       .frame_thickness_rate = 25.0,
@@ -187,7 +197,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button11_style{
-      .behavior = &floating_behavior,
+      .behavior = &floating_frame_behavior,
       .color_release = Color{ U"#FFFFFF" },
       .color_label = Color{ U"#3D3D3D" },
       .roundrect_rate = 5.0,
@@ -197,7 +207,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button12_style{
-      .behavior = &floating_behavior,
+      .behavior = &floating_frame_behavior,
       .color_release = Color{ U"#6E6D70" },
       .color_label = Color{ U"#DFDEDF" },
       .roundrect_rate = 5.0,
