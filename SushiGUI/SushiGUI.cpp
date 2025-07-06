@@ -38,13 +38,13 @@ namespace s3d {
 
     void FrameDecorator::draw(const uint64 id, const RectF& rectf, const Font& font, const StringView& label, const ButtonStyle& style, bool enabled) const {
       behaivor_.draw(id, rectf, font, label, style, enabled);
-      if (not style.frame_thickness_rate) return;
       const double r = style.roundrect_rate.value_or(0.0);
       const RoundRect roundrect{ rectf, (r > 0) ? Min(rectf.w, rectf.h) / r : 0.0 };
-      if (style.frame_color) {
+      if (style.frame_color and style.frame_thickness_rate) {
         roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate, *style.frame_color);
-      }else if (enabled and roundrect.leftPressed() and style.frame_color_press) {
-        roundrect.drawFrame(Min(rectf.w, rectf.h) / style.frame_thickness_rate_press, *style.frame_color_press);
+      }
+      if (enabled and roundrect.leftPressed() and style.frame_color_press and style.frame_thickness_rate_press) {
+        roundrect.drawFrame(Min(rectf.w, rectf.h) / *style.frame_thickness_rate_press, *style.frame_color_press);
       }
     }
 

@@ -86,7 +86,7 @@ namespace s3d {
       Optional<Color> frame_color = unspecified; // ボタンフレームの色
       Optional<Color> frame_color_press = unspecified; // ボタンフレームの色
       Optional<double> frame_thickness_rate = unspecified; // ボタンフレームの太さ
-      double frame_thickness_rate_press = 1.0; // プレス時のボタンフレームの太さ
+      Optional<double> frame_thickness_rate_press = unspecified; // プレス時のボタンフレームの太さ
       Optional<double> roundrect_rate = unspecified; // 角丸の大きさ比率
       Optional<Duration> float_duration = unspecified; // 浮かびきる時間
       Optional<double> float_rate = unspecified; // 浮かぶ高さ比
