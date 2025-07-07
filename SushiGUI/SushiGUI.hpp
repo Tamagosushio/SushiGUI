@@ -77,6 +77,7 @@ namespace s3d {
     inline constexpr FloatingDecorator floating_frame_behavior{ frame_behaivor };
     inline constexpr GradientDecorator gradient_behavior{ default_behavior };
     inline constexpr FrameDecorator frame_gradient_behavior{ gradient_behavior };
+    inline constexpr FloatingDecorator floating_frame_gradient_behavior{ frame_gradient_behavior };
 
     /// @brief ボタンのスタイルを定義する構造体
     struct ButtonStyle {
@@ -229,6 +230,21 @@ namespace s3d {
       .roundrect_rate = 5.0,
     };
 
+    inline constexpr ButtonStyle button14_style{
+      .behavior = &floating_frame_gradient_behavior,
+      .color_label = Color{ U"#0F1111" },
+      .frame_color = Color{ U"#D5D9D9" },
+      .frame_color_press = Color{ U"#E77600" },
+      .frame_thickness_rate = 25.0,
+      .frame_thickness_rate_press = 25.0,
+      .roundrect_rate = 5.0,
+      .float_duration = 0.00s,
+      .float_rate = 0.00,
+      .float_shadow_color = Color{ 228, 121, 17 },
+      .gradient_color_start = Color{ U"#F7F8FA" },
+      .gradient_color_end = Color{ U"#E7E9EC" },
+    };
+
     class Button {
     private:
       const ButtonStyle style_;
@@ -258,6 +274,7 @@ namespace s3d {
     inline constexpr Button Button11{ button11_style };
     inline constexpr Button Button12{ button12_style };
     inline constexpr Button Button13{ button13_style };
+    inline constexpr Button Button14{ button14_style };
 
     // カスタムスタイル用のファクトリ関数
     inline Button button(const ButtonStyle& style) {

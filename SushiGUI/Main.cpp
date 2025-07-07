@@ -54,6 +54,9 @@ void Main() {
     if (SushiGUI::Button13(font_button, U"button13", Arg::topLeft(Scene::CenterF().withY(170).movedBy(50, 0)), Size{ 150, 50 })) {
       Print << U"button13";
     }
+    if (SushiGUI::Button14(font_button, U"button14", Arg::topLeft(Scene::CenterF().withY(230).movedBy(50, 0)), Size{ 150, 50 })) {
+      Print << U"button14";
+    }
     
 
 
