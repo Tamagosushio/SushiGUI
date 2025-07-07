@@ -24,6 +24,8 @@ namespace s3d {
 
     struct ButtonStyle;
 
+    inline RoundRect create_roundrect(const RectF& rectf, const ButtonStyle& style);
+
     /// @brief ボタンの振る舞いのインターフェース
     class IButtonBehavior {
     public:
