@@ -13,6 +13,9 @@ namespace s3d {
     void draw_button_label(const StringView& label, const RectF& rectf, const Font& font, const Color& color);
     bool is_click_button(const RoundRect& roundrect);
 
+    void set_default_font(const Font& font);
+    const Font& get_default_font(void);
+
     struct ButtonState {
       Transition float_transition;
       ButtonState(const Duration& float_transition)
@@ -250,34 +253,29 @@ namespace s3d {
       const ButtonStyle style_;
     public:
       explicit constexpr Button(const ButtonStyle& style) : style_{ style } {}
-      /// @brief 左上座標を指定してボタン描画
-      /// @param font 文字列描画に使用するFont
-      /// @param label ボタン内に描画する文字列
-      /// @param pos 左上座標
-      /// @param size ボタンの大きさ
-      /// @param enabled ボタンが有効か
-      /// @return 
+      /// @brief 左上座標を指定してボタン描画 (既定フォントを使用)
+      bool operator()(const StringView& label, const position_type& pos, const size_type& size, bool enabled = true) const {
+        return (*this)(get_default_font(), label, RectF{ pos, size }, enabled);
+      }
+      /// @brief アンカーを指定してボタン描画 (既定フォントを使用)
+      template <class AnchorType>
+      bool operator()(const StringView& label, const AnchorType& anchor, const size_type& size, bool enabled = true) const {
+        return (*this)(get_default_font(), label, RectF{ anchor, size }, enabled);
+      }
+      /// @brief 長方形を指定してボタン描画 (既定フォントを使用)
+      bool operator()(const StringView& label, const RectF& rectf, bool enabled = true) const {
+        return (*this)(get_default_font(), label, rectf, enabled);
+      }
+      /// @brief 左上座標を指定してボタン描画 (指定フォントを使用)
       bool operator()(const Font& font, const StringView& label, const position_type& pos, const size_type& size, bool enabled = true) const {
         return (*this)(font, label, RectF{ pos, size }, enabled);
       }
-      /// @brief アンカーを指定してボタン描画
-      /// @tparam AnchorType 
-      /// @param font 文字列描画に使用するFont
-      /// @param label ボタン内に描画する文字 
-      /// @param anchor アンカーの種類と座標
-      /// @param size ボタンの大きさ
-      /// @param enabled ボタンが有効か
-      /// @return 
+      /// @brief アンカーを指定してボタン描画 (指定フォントを使用)
       template <class AnchorType>
       bool operator()(const Font& font, const StringView& label, const AnchorType& anchor, const size_type& size, bool enabled = true) const {
         return (*this)(font, label, RectF{ anchor, size }, enabled);
       }
-      /// @brief 長方形を指定してボタン描画
-      /// @param font 文字列描画に使用するFont
-      /// @param label ボタン内に描画する文字 
-      /// @param rectf ボタンに使用する長方形
-      /// @param enabled ボタンが有効か
-      /// @return 
+      /// @brief 長方形を指定してボタン描画 (指定フォントを使用)
       bool operator()(const Font& font, const StringView& label, const RectF& rectf, bool enabled = true) const;
     };
 

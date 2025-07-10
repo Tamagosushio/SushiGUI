@@ -8,19 +8,20 @@ void Main() {
 
   Scene::SetBackground(Palette::White);
   Window::Resize(1280, 720);
-  Font font_button(48, Typeface::Bold);
+
+  const Font font_button(48, Typeface::Bold);
 
   MakeGif makegif{ U"./output.gif" };
 
   while (System::Update()) {
 
-    if (SushiGUI::Button1(font_button, U"button1", Arg::topRight(Scene::CenterF().withY(50).movedBy(-50, 0)), Size{ 150, 50 })) {
+    if (SushiGUI::Button1(U"button1", Arg::topRight(Scene::CenterF().withY(50).movedBy(-50, 0)), Size{ 150, 50 })) {
       Print << U"button1";
     }
-    if (SushiGUI::Button2(font_button, U"button2", Arg::topRight(Scene::CenterF().withY(110).movedBy(-50, 0)), Size{ 150, 50 })) {
+    if (SushiGUI::Button2(U"button2", Arg::topRight(Scene::CenterF().withY(110).movedBy(-50, 0)), Size{ 150, 50 })) {
       Print << U"button2";
     }
-    if (SushiGUI::Button3(font_button, U"button3", Arg::topRight(Scene::CenterF().withY(170).movedBy(-50, 0)), Size{ 150, 50 })) {
+    if (SushiGUI::Button3(U"button3", Arg::topRight(Scene::CenterF().withY(170).movedBy(-50, 0)), Size{ 150, 50 })) {
       Print << U"button3";
     }
     if (SushiGUI::Button4(font_button, U"button4", Arg::topRight(Scene::CenterF().withY(230).movedBy(-50, 0)), Size{ 150, 50 })) {

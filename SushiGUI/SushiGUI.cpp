@@ -1,4 +1,5 @@
-﻿# include "SushiGUI.hpp"
+﻿# pragma once
+# include "SushiGUI.hpp"
 
 namespace s3d {
   namespace SushiGUI {
@@ -19,6 +20,19 @@ namespace s3d {
     bool is_click_button(const RoundRect& roundrect) {
       if (roundrect.mouseOver()) Cursor::RequestStyle(CursorStyle::Hand);
       return roundrect.leftClicked();
+    }
+
+    namespace {
+      Optional<Font> default_font;
+    }
+    void set_default_font(const Font& font) {
+      default_font = font;
+    }
+    const Font& get_default_font(void) {
+      if (not default_font) {
+        default_font = Font{ 64 };
+      }
+      return *default_font;
     }
 
     inline RoundRect create_roundrect(const RectF& rectf, const ButtonStyle& style) {
