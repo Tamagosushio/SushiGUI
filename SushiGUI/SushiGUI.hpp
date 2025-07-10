@@ -73,8 +73,8 @@ namespace s3d {
 
     // Behaviorのインスタンスを生成 (ButtonStyle定義の前に置く)
     inline constexpr DefaultBehavior default_behavior;
-    inline constexpr FrameDecorator frame_behaivor{ default_behavior };
-    inline constexpr FloatingDecorator floating_frame_behavior{ frame_behaivor };
+    inline constexpr FrameDecorator frame_behavior{ default_behavior };
+    inline constexpr FloatingDecorator floating_frame_behavior{ frame_behavior };
     inline constexpr GradientDecorator gradient_behavior{ default_behavior };
     inline constexpr FrameDecorator frame_gradient_behavior{ gradient_behavior };
     inline constexpr FloatingDecorator floating_frame_gradient_behavior{ frame_gradient_behavior };
@@ -114,7 +114,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button3_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#2EA44F" },
       .color_mouseover = Color{ U"#2C974B" },
       .color_press = Color{ U"#298E46" },
@@ -125,7 +125,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button4_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#FAFBFC" },
       .color_mouseover = Color{ U"#F3F4F6" },
       .color_press = Color{ U"#EAECF0" },
@@ -168,7 +168,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button8_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#E1ECF4" },
       .color_mouseover = Color{ U"#B3D3EA"},
       .color_press = Color{ U"#A0C7E4" },
@@ -179,7 +179,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button9_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#405CF5" },
       .color_label = Color{ U"#FFFFFF" },
       .frame_color_press = Color{ U"#B1CBE0" },
@@ -200,7 +200,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button11_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#FFFFFF" },
       .color_label = Color{ U"#3D3D3D" },
       .frame_color_press = Color{ U"#9CB5EC" },
@@ -210,7 +210,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button12_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#6E6D70" },
       .color_label = Color{ U"#DFDEDF" },
       .frame_color_press = Color{ U"#9CB5EC" },
@@ -220,7 +220,7 @@ namespace s3d {
     };
 
     inline constexpr ButtonStyle button13_style{
-      .behavior = &frame_behaivor,
+      .behavior = &frame_behavior,
       .color_release = Color{ U"#FFFFFF" },
       .color_label = Color{ U"#0F1111" },
       .frame_color = Color{ U"#D5D9D9" },
