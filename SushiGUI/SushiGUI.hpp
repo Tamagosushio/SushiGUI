@@ -251,8 +251,31 @@ namespace s3d {
     class Button {
     private:
       const ButtonStyle style_;
+      Vec2 calculate_size(const Font& font, const StringView& label) const {
+        const RectF text_region = font(label).region();
+        return text_region.stretched(text_region.w / rect_stretch_rate, text_region.h / rect_stretch_rate).size;
+      }
     public:
       explicit constexpr Button(const ButtonStyle& style) : style_{ style } {}
+
+      /// @brief 左上座標を指定してボタン描画
+      bool operator()(const StringView& label, const position_type& pos, bool enabled = true) const {
+        return (*this)(get_default_font(), label, pos, enabled);
+      }
+      /// @brief アンカーを指定してボタン描画 
+      template <class AnchorType>
+      bool operator()(const StringView& label, const AnchorType& anchor, bool enabled = true) const {
+        const Font& font = get_default_font();
+        const Vec2 button_size = calculate_size(font, label);
+        const RectF button_rect{ anchor, button_size };
+        return (*this)(font, label, button_rect, enabled);
+      }
+      /// @brief サイズ省略
+      bool operator()(const Font& font, const StringView& label, const position_type& pos, bool enabled = true) const {
+        const RectF text_region = font(label).region();
+        const Vec2 button_size= text_region.stretched(text_region.w / rect_stretch_rate, text_region.h / rect_stretch_rate).size;
+        return (*this)(font, label, RectF{pos, button_size}, enabled);
+      }
       /// @brief 左上座標を指定してボタン描画 (既定フォントを使用)
       bool operator()(const StringView& label, const position_type& pos, const size_type& size, bool enabled = true) const {
         return (*this)(get_default_font(), label, RectF{ pos, size }, enabled);

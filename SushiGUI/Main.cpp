@@ -24,7 +24,7 @@ void Main() {
     if (SushiGUI::Button3(U"button3", Arg::topRight(Scene::CenterF().withY(170).movedBy(-50, 0)), Size{ 150, 50 })) {
       Print << U"button3";
     }
-    if (SushiGUI::Button4(font_button, U"button4", Arg::topRight(Scene::CenterF().withY(230).movedBy(-50, 0)), Size{ 150, 50 })) {
+    if (SushiGUI::Button4(U"button4", Arg::topRight(Scene::CenterF().withY(230).movedBy(-50, 0)), Size{ 150, 50 })) {
       Print << U"button4";
     }
     if (SushiGUI::Button5(font_button, U"button5", Arg::topRight(Scene::CenterF().withY(290).movedBy(-50, 0)), Size{ 150, 50 })) {
@@ -39,10 +39,10 @@ void Main() {
     if (SushiGUI::Button8(font_button, U"button8", Arg::topRight(Scene::CenterF().withY(470).movedBy(-50, 0)), Size{ 150, 50 })) {
       Print << U"button8";
     }
-    if (SushiGUI::Button9(font_button, U"button9", Arg::topRight(Scene::CenterF().withY(530).movedBy(-50, 0)), Size{ 150, 50 })) {
+    if (SushiGUI::Button9(U"button9", Arg::topRight(Scene::CenterF().withY(530).movedBy(-50, 0)))) {
       Print << U"button9";
     }
-    if (SushiGUI::Button10(font_button, U"button10", Arg::topRight(Scene::CenterF().withY(590).movedBy(-50, 0)), Size{ 150, 50 })) {
+    if (SushiGUI::Button10(U"button10", Arg::topRight(Scene::CenterF().withY(590).movedBy(-50, 0)))) {
       Print << U"button10";
     }
 

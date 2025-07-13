@@ -30,7 +30,7 @@ namespace s3d {
     }
     const Font& get_default_font(void) {
       if (not default_font) {
-        default_font = Font{ 64 };
+        default_font = Font{ FontMethod::MSDF, 32 };
       }
       return *default_font;
     }
